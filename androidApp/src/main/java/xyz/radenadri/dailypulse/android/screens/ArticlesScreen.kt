@@ -30,13 +30,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import org.koin.androidx.compose.getViewModel
 import xyz.radenadri.dailypulse.articles.Article
 import xyz.radenadri.dailypulse.articles.ArticlesViewModel
 
 @Composable
 fun ArticlesScreen(
     onAboutButtonClick: () -> Unit,
-    articlesViewModel: ArticlesViewModel
+    articlesViewModel: ArticlesViewModel = getViewModel()
 ) {
     val articlesState = articlesViewModel.articlesState.collectAsState()
 
