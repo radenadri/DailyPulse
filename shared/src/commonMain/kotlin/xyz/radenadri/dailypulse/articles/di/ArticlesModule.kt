@@ -1,11 +1,11 @@
 package xyz.radenadri.dailypulse.articles.di
 
 import org.koin.dsl.module
-import xyz.radenadri.dailypulse.articles.ArticlesDataSource
-import xyz.radenadri.dailypulse.articles.ArticlesRepository
-import xyz.radenadri.dailypulse.articles.ArticlesService
-import xyz.radenadri.dailypulse.articles.ArticlesUseCase
-import xyz.radenadri.dailypulse.articles.ArticlesViewModel
+import xyz.radenadri.dailypulse.articles.data.ArticlesDataSource
+import xyz.radenadri.dailypulse.articles.data.ArticlesRepository
+import xyz.radenadri.dailypulse.articles.data.ArticlesService
+import xyz.radenadri.dailypulse.articles.application.ArticlesUseCase
+import xyz.radenadri.dailypulse.articles.presentation.ArticlesViewModel
 
 val articlesModule = module {
     single<ArticlesService> { ArticlesService(get()) }

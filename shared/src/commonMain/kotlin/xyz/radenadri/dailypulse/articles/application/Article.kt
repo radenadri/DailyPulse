@@ -1,4 +1,4 @@
-package xyz.radenadri.dailypulse.articles
+package xyz.radenadri.dailypulse.articles.application
 
 data class Article(
     val title: String,

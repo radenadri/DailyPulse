@@ -1,4 +1,4 @@
-package xyz.radenadri.dailypulse.articles
+package xyz.radenadri.dailypulse.articles.data
 
 class ArticlesRepository(
     private val dataSource: ArticlesDataSource,

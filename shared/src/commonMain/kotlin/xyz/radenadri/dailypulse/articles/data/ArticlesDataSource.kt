@@ -1,4 +1,4 @@
-package xyz.radenadri.dailypulse.articles
+package xyz.radenadri.dailypulse.articles.data
 
 import xyz.radenadri.dailypulse.db.DailyPulseDatabase
 
