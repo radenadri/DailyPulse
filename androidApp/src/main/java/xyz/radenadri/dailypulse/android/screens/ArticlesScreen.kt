@@ -30,6 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshState
 import org.koin.androidx.compose.getViewModel
 import xyz.radenadri.dailypulse.articles.Article
 import xyz.radenadri.dailypulse.articles.ArticlesViewModel
@@ -41,18 +43,14 @@ fun ArticlesScreen(
 ) {
     val articlesState = articlesViewModel.articlesState.collectAsState()
 
-
     Column {
         AppBar(onAboutButtonClick)
-
-        if (articlesState.value.loading)
-            Loader()
 
         if (articlesState.value.error != null)
             ErrorMessage(message = articlesState.value.error!!)
 
         if (articlesState.value.articles.isNotEmpty())
-            ArticlesListView(articles = articlesState.value.articles)
+            ArticlesListView(articlesViewModel)
     }
 }
 
@@ -75,11 +73,14 @@ private fun AppBar(
 }
 
 @Composable
-fun ArticlesListView(articles: List<Article>) {
-
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(articles) { article ->
-            ArticleItemView(article)
+fun ArticlesListView(viewModel: ArticlesViewModel) {
+    SwipeRefresh(
+        state = SwipeRefreshState(viewModel.articlesState.value.loading),
+        onRefresh = { viewModel.getArticles(true) }) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(viewModel.articlesState.value.articles) { article ->
+                ArticleItemView(article)
+            }
         }
     }
 }
@@ -113,20 +114,6 @@ fun ArticleItemView(article: Article) {
 }
 
 @Composable
-fun Loader() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier.width(64.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            trackColor = MaterialTheme.colorScheme.secondary
-        )
-    }
-}
-
-@Composable
 fun ErrorMessage(message: String) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -134,7 +121,7 @@ fun ErrorMessage(message: String) {
     ) {
         Text(
             text = message,
-            style = TextStyle(fontSize = 28.sp, textAlign = TextAlign.Center,),
+            style = TextStyle(fontSize = 28.sp, textAlign = TextAlign.Center),
         )
     }
 }

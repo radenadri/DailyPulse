@@ -6,7 +6,7 @@ import org.koin.core.context.startKoin
 import xyz.radenadri.dailypulse.articles.ArticlesViewModel
 
 fun initKoin() {
-    val modules = sharedKoinModules
+    val modules = sharedKoinModules + databaseModule
 
     startKoin {
         modules(modules)
