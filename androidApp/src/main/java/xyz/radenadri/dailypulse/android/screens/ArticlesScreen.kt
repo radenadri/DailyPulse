@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -27,16 +28,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 import xyz.radenadri.dailypulse.articles.application.Article
 import xyz.radenadri.dailypulse.articles.presentation.ArticlesViewModel
 
 @Composable
 fun ArticlesScreen(
     onAboutButtonClick: () -> Unit,
-    articlesViewModel: ArticlesViewModel = getViewModel()
+    articlesViewModel: ArticlesViewModel = koinViewModel<ArticlesViewModel>()
 ) {
     val articlesState = articlesViewModel.articlesState.collectAsState()
 
@@ -69,11 +68,14 @@ private fun AppBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticlesListView(viewModel: ArticlesViewModel) {
-    SwipeRefresh(
-        state = SwipeRefreshState(viewModel.articlesState.value.loading),
-        onRefresh = { viewModel.getArticles(true) }) {
+    PullToRefreshBox(
+        modifier = Modifier.fillMaxSize(),
+        isRefreshing = viewModel.articlesState.value.loading,
+        onRefresh = { viewModel.getArticles(true) }
+    ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(viewModel.articlesState.value.articles) { article ->
                 ArticleItemView(article)
